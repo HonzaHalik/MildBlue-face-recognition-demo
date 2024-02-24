@@ -5,7 +5,7 @@ import time
 import numpy
 import threading
 import platform
-
+import os
 
 # This is a little bit complicated (but fast) example of running face recognition on live video from your webcam.
 # This example is using multiprocess.
@@ -144,27 +144,20 @@ if __name__ == '__main__':
     p.append(threading.Thread(target=capture, args=(read_frame_list, Global, worker_num,)))
     p[0].start()
 
-    # Load a sample picture and learn how to recognize it.
-    obama_image = face_recognition.load_image_file(fr"C:\Users\halik\OneDrive\Dokumenty\GitHub\MildBlue-face-recognition-demo\demo\pictures\obama.jpg")
-    obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
-
-    biden_image = face_recognition.load_image_file(fr"C:\Users\halik\OneDrive\Dokumenty\GitHub\MildBlue-face-recognition-demo\demo\pictures\biden.jpg")
-    biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
-
-    kourim_image = face_recognition.load_image_file(fr"C:\Users\halik\OneDrive\Dokumenty\GitHub\MildBlue-face-recognition-demo\demo\pictures\kourim.jpeg")
-    kourim_face_encoding = face_recognition.face_encodings(kourim_image)[0]
+    local_known_face_encodings = []
+    local_known_face_names = []
+    pictures_path = fr"C:\Users\halik\OneDrive\Dokumenty\GitHub\MildBlue-face-recognition-demo\demo\pictures"
+    for filename in os.listdir(pictures_path):
+        image = face_recognition.load_image_file(os.path.join(pictures_path, filename))
+        face_encoding = face_recognition.face_encodings(image)[0]
+        name, _ = os.path.splitext(filename)
+        
+        local_known_face_encodings.append(face_encoding)
+        local_known_face_names.append(name)
 
     # Create arrays of known face encodings and their names
-    Global.known_face_encodings = [
-        obama_face_encoding,
-        biden_face_encoding,
-        kourim_face_encoding
-    ]
-    Global.known_face_names = [
-        "Barack Obama",
-        "Joe Biden",
-        "Tomas Kourim"
-    ]
+    Global.known_face_encodings = local_known_face_encodings
+    Global.known_face_names = local_known_face_names
 
     # Create workers
     for worker_id in range(1, worker_num + 1):
