@@ -148,18 +148,22 @@ if __name__ == '__main__':
     obama_image = face_recognition.load_image_file(fr"C:\Users\halik\OneDrive\Dokumenty\GitHub\MildBlue-face-recognition-demo\demo\pictures\obama.jpg")
     obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
 
-    # Load a second sample picture and learn how to recognize it.
     biden_image = face_recognition.load_image_file(fr"C:\Users\halik\OneDrive\Dokumenty\GitHub\MildBlue-face-recognition-demo\demo\pictures\biden.jpg")
     biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
+
+    kourim_image = face_recognition.load_image_file(fr"C:\Users\halik\OneDrive\Dokumenty\GitHub\MildBlue-face-recognition-demo\demo\pictures\kourim.jpeg")
+    kourim_face_encoding = face_recognition.face_encodings(kourim_image)[0]
 
     # Create arrays of known face encodings and their names
     Global.known_face_encodings = [
         obama_face_encoding,
-        biden_face_encoding
+        biden_face_encoding,
+        kourim_face_encoding
     ]
     Global.known_face_names = [
         "Barack Obama",
-        "Joe Biden"
+        "Joe Biden",
+        "Tomas Kourim"
     ]
 
     # Create workers
