@@ -146,7 +146,7 @@ if __name__ == '__main__':
 
     local_known_face_encodings = []
     local_known_face_names = []
-    pictures_path = fr"C:\Users\halik\OneDrive\Dokumenty\GitHub\MildBlue-face-recognition-demo\demo\pictures"
+    pictures_path = fr"C:\Users\halik\OneDrive\Dokumenty\GitHub\MildBlue-face-recognition-demo\demo\known_faces"
     for filename in os.listdir(pictures_path):
         image = face_recognition.load_image_file(os.path.join(pictures_path, filename))
         face_encoding = face_recognition.face_encodings(image)[0]
