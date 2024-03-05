@@ -49,8 +49,8 @@ face_encodings = []
 face_names = []
 process_this_frame = True
 
-frame_time_list = []
 
+frame_time_list = []
 while True:
     # pro pocitani fps vzit cas kdy se zacal zpracovavat snimek
     start_time = time.time()
@@ -87,6 +87,13 @@ while True:
                 name = known_face_names[best_match_index]
 
             face_names.append(name)
+        
+            # pocitani fps
+            frame_time = time.time() - start_time
+            frame_time_list.append(frame_time)
+            avg_frame_time = sum(frame_time_list) / len(frame_time_list)
+            fps= 1/avg_frame_time
+            print(f"fps: {(1/frame_time):.2f}, average fps: {fps:.2f}")
 
     process_this_frame = not process_this_frame
 
@@ -106,12 +113,6 @@ while True:
         font = cv2.FONT_HERSHEY_DUPLEX
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
     
-    # pocitani fps
-    frame_time = time.time() - start_time
-    frame_time_list.append(frame_time)
-    avg_frame_time = sum(frame_time_list) / len(frame_time_list)
-    fps = 1/avg_frame_time
-    print(f"fps: {fps:.2f}")
     # Display the resulting image
     cv2.imshow('Video', frame)
 
