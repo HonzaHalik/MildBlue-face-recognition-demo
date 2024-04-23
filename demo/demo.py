@@ -6,6 +6,7 @@ import numpy
 import threading
 import platform
 import os
+from tqdm import tqdm
 
 # This is a little bit complicated (but fast) example of running face recognition on live video from your webcam.
 # This example is using multiprocess.
@@ -101,7 +102,7 @@ def process(worker_id, read_frame_list, write_frame_list, Global, worker_num):
 
             # Draw a label with a name below the face
             cv2.rectangle(frame_process, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
-            font = cv2.FONT_HERSHEY_DUPLEX
+            font = cv2.FONT_HERSHEY_SIMPLEX
             cv2.putText(frame_process, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
         # Wait to write
@@ -147,14 +148,17 @@ if __name__ == '__main__':
     local_known_face_encodings = []
     local_known_face_names = []
     pictures_path = fr"C:\Users\halik\OneDrive\Dokumenty\GitHub\MildBlue-face-recognition-demo\demo\known_faces"
-    for filename in os.listdir(pictures_path):
+    for filename in tqdm(os.listdir(pictures_path)):
         image = face_recognition.load_image_file(os.path.join(pictures_path, filename))
-        face_encoding = face_recognition.face_encodings(image)[0]
+        try:
+            face_encoding = face_recognition.face_encodings(image)[0]
+        except:
+            print(f'nenalezeny oblicej v: {filename}')
         name, _ = os.path.splitext(filename)
         
         local_known_face_encodings.append(face_encoding)
         local_known_face_names.append(name)
-
+    _ = input("____________________________________")
     # Create arrays of known face encodings and their names
     Global.known_face_encodings = local_known_face_encodings
     Global.known_face_names = local_known_face_names
