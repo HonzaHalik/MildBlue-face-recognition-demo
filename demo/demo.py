@@ -148,17 +148,20 @@ if __name__ == '__main__':
     local_known_face_encodings = []
     local_known_face_names = []
     pictures_path = fr"C:\Users\halik\OneDrive\Dokumenty\GitHub\MildBlue-face-recognition-demo\demo\known_faces"
+    no_face_in_image = False
     for filename in tqdm(os.listdir(pictures_path)):
         image = face_recognition.load_image_file(os.path.join(pictures_path, filename))
         try:
             face_encoding = face_recognition.face_encodings(image)[0]
         except:
             print(f'nenalezeny oblicej v: {filename}')
+            no_face_in_image = True
+
         name, _ = os.path.splitext(filename)
-        
         local_known_face_encodings.append(face_encoding)
         local_known_face_names.append(name)
-    _ = input("____________________________________")
+    if no_face_in_image:
+        _ = input("Potreba odebrat obrazky bez obliceje, enter - presto spustit")
     # Create arrays of known face encodings and their names
     Global.known_face_encodings = local_known_face_encodings
     Global.known_face_names = local_known_face_names
