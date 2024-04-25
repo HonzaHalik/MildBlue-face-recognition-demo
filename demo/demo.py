@@ -147,7 +147,7 @@ if __name__ == '__main__':
 
     local_known_face_encodings = []
     local_known_face_names = []
-    pictures_path = fr"C:\Users\halik\OneDrive\Dokumenty\GitHub\MildBlue-face-recognition-demo\demo\known_faces"
+    pictures_path = fr"../data/known_faces"
     no_face_in_image = False
     for filename in tqdm(os.listdir(pictures_path)):
         image = face_recognition.load_image_file(os.path.join(pictures_path, filename))
